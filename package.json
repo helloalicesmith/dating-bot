@@ -1,0 +1,14 @@
+{
+  "name": "dating-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@grammyjs/menu": "^1.2.0",
+    "@grammyjs/stateless-question": "^3.0.1",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.0.3",
+    "grammy": "^1.16.0"
+  }
+}
