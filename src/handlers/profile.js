@@ -1,5 +1,5 @@
 const Composer = require('../composer.js')
-const { menu } = require("../menu/profile-menu.js");
+const { profileMenu } = require("../menu/profile-menu.js");
 const { USER_OPTIONS } = require('../constants.js')
 const { getUserProfileToHTML } = require('../helpers/html-helper.js')
 const { userToProfileObject } = require('../mappers/user.js')
@@ -12,7 +12,7 @@ const getMyProfileOptions = async (ctx) => {
     const { data } = await api.usersService.getUserProfile(username)
     const html = getUserProfileToHTML(userToProfileObject(data))
 
-    await ctx.reply(html, { reply_markup: menu, parse_mode: 'HTML' });
+    await ctx.reply(html, { reply_markup: profileMenu, parse_mode: 'HTML' });
 }
 
 const getMyProfileFilter = async (ctx) => {

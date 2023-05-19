@@ -1,8 +1,9 @@
 const { StatelessQuestion } = require("@grammyjs/stateless-question")
 const parse = require('date-fns/parse')
 
-const citiesJson = require('../data/russian-cities.json')
+const { getCitiesByValue } = require('../helpers/cities-helper')
 const { userKeyboard } = require('../keyboards/user-keyboard')
+const { citiesMenu } = require('../menu/cities-menu')
 const api = require('../api/api')
 
 const nameQuestion = new StatelessQuestion("name", async (ctx) => {
@@ -23,7 +24,14 @@ const oldQuestion = new StatelessQuestion("old", async (ctx) => {
 });
 
 const cityQuestion = new StatelessQuestion('city', async (ctx) => {
-    console.log(citiesJson[0])
+    const value = ctx.message.text
+    const result = getCitiesByValue(value)
+
+    result.forEach((it) => {
+        citiesMenu.text(it.name).row()
+    })
+
+    await ctx.reply('Подтвердите город', { reply_markup: citiesMenu })
 })
 
 module.exports = {
