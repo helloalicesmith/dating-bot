@@ -1,6 +1,6 @@
 const Composer = require('../composer.js')
-const userOptions = require('./user-options.js')
-const profile = require('./profile.js')
+const userOptions = require('./commands.js')
+const profile = require('./hears.js')
 
 const composer = new Composer()
 

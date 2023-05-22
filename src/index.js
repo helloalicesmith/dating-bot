@@ -11,4 +11,10 @@ bot.use(menu)
 bot.use(questions)
 bot.use(handlers)
 
+bot.api.setMyCommands([
+    { command: "start", description: 'Начать' },
+    { command: "profile", description: 'Мой профиль' },
+    { command: "filters", description: 'Мои фильтры' },
+]);
+
 bot.start();
