@@ -1,8 +1,7 @@
 const Composer = require('../composer.js')
-const { profileMenu } = require("../menu/profile-menu.js");
+const api = require('../api/api.js')
+const { userKeyboard } = require("../keyboards/user-keyboard.js");
 const { USER_OPTIONS } = require('../constants.js')
-const { getUserProfileToHTML } = require('../helpers/html-helper.js')
-const { userToProfileObject } = require('../mappers/user.js')
 const composer = new Composer().on('message')
 
 const searchUser = async (ctx) => {
@@ -10,5 +9,22 @@ const searchUser = async (ctx) => {
 }
 
 composer.hears(USER_OPTIONS.search, searchUser)
+composer.on('msg:location', async (ctx) => {
+    const { username: username_tg } = ctx.message.from
+    const { latitude: lat, longitude: long } = ctx.message.location
+
+    const { data } = await api.geoService.getLocationByLatLong({
+        lat,
+        long
+    })
+
+    const city = data[0].local_names.ru
+
+    await api.usersService.updateUser(username_tg, {
+        city
+    })
+
+    return await ctx.reply('Геолокация успешно добалена 👌🏻', { reply_markup: userKeyboard })
+})
 
 module.exports = composer

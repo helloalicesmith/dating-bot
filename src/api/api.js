@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const UserService = require('./services/users');
+const GeoService = require('./services/geo');
 
 class Api {
     constructor() {
@@ -9,6 +10,8 @@ class Api {
         });
 
         this.usersService = new UserService(this.instance)
+        this.geoService = new GeoService(this.instance)
+
     }
 }
 
