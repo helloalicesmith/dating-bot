@@ -12,6 +12,7 @@
     },
     "rules": {
          "no-console": "error",
-         "prettier/prettier": "error"
+         "prettier/prettier": "error",
+         "no-constant-condition": "off"
     }
 }

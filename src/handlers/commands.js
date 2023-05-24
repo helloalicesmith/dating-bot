@@ -31,7 +31,7 @@ const checkProfile = async (ctx) => {
 const getMyProfileOptions = async (ctx) => {
     const { id } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
-    const html = getUserProfileToHTML(userToProfileObject(data))
+    const html = getUserProfileToHTML(userToProfileObject(ctx, data))
 
     await ctx.reply(html, { reply_markup: profileMenu, parse_mode: 'HTML' })
 }

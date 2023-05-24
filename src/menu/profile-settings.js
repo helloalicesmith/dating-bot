@@ -9,7 +9,7 @@ const profileQuestion = require('../questions/profile-question')
 const { cityQuestion } = profileQuestion
 
 const main = new Menu('root-profile-menu').submenu(
-    'Изменить профиль ⚙️',
+    (ctx) => ctx.t('menu.main-profile-settings'),
     'settings-profile-submenu'
 )
 
@@ -41,11 +41,17 @@ const settingsSubmenu = new Menu('settings-profile-submenu')
     .back('<< Назад')
 
 const citiesSubmenu = new Menu('settings-profile-cities-submenu')
-    .text('Добавить город по геолокации', async (ctx) => {
-        return await ctx.reply('Пожалуйста добавте геолокацию', {
-            reply_markup: locationKeyboard,
-        })
-    })
+    .text(
+        (ctx) => ctx.t('menu.submenu-profile-settings-cities-location'),
+        async (ctx) => {
+            return await ctx.reply(
+                ctx.t('menu.submenu-profile-settings-cities-confirm'),
+                {
+                    reply_markup: locationKeyboard,
+                }
+            )
+        }
+    )
     .row()
     .text('Добавить город по поиску', async (ctx) => {
         return await cityQuestion.replyWithMarkdown(

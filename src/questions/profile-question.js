@@ -1,5 +1,4 @@
 const { StatelessQuestion } = require('@grammyjs/stateless-question')
-const parse = require('date-fns/parse')
 
 const { getCitiesByValue } = require('../helpers/cities')
 const { userKeyboard } = require('../keyboards/user-keyboard')
@@ -18,14 +17,6 @@ const nameQuestion = new StatelessQuestion('name', async (ctx) => {
     })
 })
 
-const oldQuestion = new StatelessQuestion('old', async (ctx) => {
-    const date = parse(ctx.message.text, 'dd.MM.yyyy', new Date())
-
-    await api.usersService.createUser({
-        birthday: date,
-    })
-})
-
 const cityQuestion = new StatelessQuestion('city', async (ctx) => {
     const value = ctx.message.text
     const result = getCitiesByValue(value)
@@ -39,6 +30,5 @@ const cityQuestion = new StatelessQuestion('city', async (ctx) => {
 
 module.exports = {
     nameQuestion,
-    oldQuestion,
     cityQuestion,
 }
