@@ -2,21 +2,22 @@ const { userKeyboard } = require('../keyboards/user-keyboard')
 const Composer = require('../composer.js')
 const api = require("../api/api.js");
 
-const { profileMenu } = require("../menu/profile-menu.js");
-const { getUserProfileToHTML } = require('../helpers/html-helper.js')
+const { profileMenu } = require("../menu/profile-settings.js");
+const { getUserProfileToHTML } = require('../helpers/html.js')
 const { userToProfileObject } = require('../mappers/user.js')
 
 const composer = new Composer().on('message')
 
 const checkProfile = async (ctx) => {
-    const { username: username_tg } = ctx.message.from
-    const { data } = await api.usersService.getUserProfile(username_tg)
+    const { id } = ctx.message.from
+
+    const { data } = await api.usersService.getUserProfile(id)
 
     const text = data ? `С возвращением ${data.name ?? ''}! 🤟 ` : 'Привет! Прежде чем начать, заполни свой профиль 🤓'
 
     if (!data) {
         await api.usersService.createUser({
-            username_tg
+            id
         })
     }
 
@@ -26,8 +27,8 @@ const checkProfile = async (ctx) => {
 }
 
 const getMyProfileOptions = async (ctx) => {
-    const { username } = ctx.message.from
-    const { data } = await api.usersService.getUserProfile(username)
+    const { id } = ctx.message.from
+    const { data } = await api.usersService.getUserProfile(id)
     const html = getUserProfileToHTML(userToProfileObject(data))
 
     await ctx.reply(html, { reply_markup: profileMenu, parse_mode: 'HTML' });

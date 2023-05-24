@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@grammyjs/conversations": "^1.1.1",
+    "@grammyjs/i18n": "^1.0.1",
     "@grammyjs/menu": "^1.2.0",
     "@grammyjs/stateless-question": "^3.0.1",
     "axios": "^1.4.0",

@@ -8,8 +8,7 @@ const searchUser = async (ctx) => {
     await ctx.reply('Этот функционал еще не сделан :(')
 }
 
-composer.hears(USER_OPTIONS.search, searchUser)
-composer.on('msg:location', async (ctx) => {
+const getLocation = async (ctx) => {
     const { username: username_tg } = ctx.message.from
     const { latitude: lat, longitude: long } = ctx.message.location
 
@@ -25,6 +24,9 @@ composer.on('msg:location', async (ctx) => {
     })
 
     return await ctx.reply('Геолокация успешно добалена 👌🏻', { reply_markup: userKeyboard })
-})
+}
+
+composer.hears(USER_OPTIONS.search, searchUser)
+composer.on('msg:location', getLocation)
 
 module.exports = composer

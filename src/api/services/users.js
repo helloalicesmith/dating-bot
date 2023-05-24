@@ -13,7 +13,7 @@ class UsersService {
     }
 
     async updateUser(id, data) {
-        return await this.connector.patch(`${this.path}?username=${id}`, data)
+        return await this.connector.patch(`${this.path}?id=${id}`, data)
     }
 }
 

@@ -1,6 +1,6 @@
 const Composer = require('../composer.js')
-const { profileMenu } = require('./profile-menu.js')
-const { citiesMenu } = require('./cities-menu.js')
+const { profileMenu } = require('./profile-settings.js')
+const { citiesMenu } = require('./cities.js')
 
 const composer = new Composer()
 

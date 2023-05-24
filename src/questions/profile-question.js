@@ -1,9 +1,9 @@
 const { StatelessQuestion } = require("@grammyjs/stateless-question")
 const parse = require('date-fns/parse')
 
-const { getCitiesByValue } = require('../helpers/cities-helper')
+const { getCitiesByValue } = require('../helpers/cities')
 const { userKeyboard } = require('../keyboards/user-keyboard')
-const { citiesMenu } = require('../menu/cities-menu')
+const { citiesMenu } = require('../menu/cities')
 const api = require('../api/api')
 
 const nameQuestion = new StatelessQuestion("name", async (ctx) => {
