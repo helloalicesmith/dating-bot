@@ -5,7 +5,6 @@ const { I18n } = require('@grammyjs/i18n')
 const userConversations = require('./conversation/index')
 const menu = require('./menu/index')
 const handlers = require('./handlers/index')
-const questions = require('./questions/index')
 require('dotenv').config()
 
 const bot = new Bot(process.env.TOKEN)
@@ -28,7 +27,6 @@ bot.use(userConversations)
 
 bot.use(menu)
 
-bot.use(questions)
 bot.use(handlers)
 
 bot.api.setMyCommands([

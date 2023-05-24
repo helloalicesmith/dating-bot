@@ -4,9 +4,6 @@ const {
     locationKeyboard,
     genderKeyboard,
 } = require('../keyboards/user-keyboard')
-const profileQuestion = require('../questions/profile-question')
-
-const { cityQuestion } = profileQuestion
 
 const main = new Menu('root-profile-menu').submenu(
     (ctx) => ctx.t('menu.main-profile-settings'),
@@ -52,13 +49,6 @@ const citiesSubmenu = new Menu('settings-profile-cities-submenu')
             )
         }
     )
-    .row()
-    .text('Добавить город по поиску', async (ctx) => {
-        return await cityQuestion.replyWithMarkdown(
-            ctx,
-            'Пожалуйста введите название города'
-        )
-    })
     .row()
     .back('<< Назад', async (ctx) => {
         return ctx.menu.nav('settings-profile-submenu')
