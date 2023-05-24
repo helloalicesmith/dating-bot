@@ -1,6 +1,6 @@
 const Composer = require('../composer.js')
 const api = require('../api/api.js')
-const { userKeyboard } = require("../keyboards/user-keyboard.js");
+const { userKeyboard } = require('../keyboards/user-keyboard.js')
 const { USER_OPTIONS } = require('../constants.js')
 const composer = new Composer().on('message')
 
@@ -14,16 +14,18 @@ const getLocation = async (ctx) => {
 
     const { data } = await api.geoService.getLocationByLatLong({
         lat,
-        long
+        long,
     })
 
     const city = data[0].local_names.ru
 
     await api.usersService.updateUser(username_tg, {
-        city
+        city,
     })
 
-    return await ctx.reply('Геолокация успешно добалена 👌🏻', { reply_markup: userKeyboard })
+    return await ctx.reply('Геолокация успешно добалена 👌🏻', {
+        reply_markup: userKeyboard,
+    })
 }
 
 composer.hears(USER_OPTIONS.search, searchUser)

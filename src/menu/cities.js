@@ -1,4 +1,4 @@
-const { Menu } = require("@grammyjs/menu")
+const { Menu } = require('@grammyjs/menu')
 
 const menu = new Menu('cities-menu')
 

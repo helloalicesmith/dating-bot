@@ -1,5 +1,5 @@
 const userToProfileObject = (user) => ({
-    'Имя': user.name,
+    Имя: user.name,
     'Дата рождения': user.birthday,
 })
 

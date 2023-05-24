@@ -5,7 +5,9 @@ class GeoService {
     }
 
     async getLocationByLatLong({ lat, long, limit = 10 }) {
-        return await this.connector.get(`${this.path}/reverse?lat=${lat}&lon=${long}&limit=${limit}&appid=${process.env.OPENWEATHER_KEY}`)
+        return await this.connector.get(
+            `${this.path}/reverse?lat=${lat}&lon=${long}&limit=${limit}&appid=${process.env.OPENWEATHER_KEY}`
+        )
     }
 }
 

@@ -1,7 +1,7 @@
 const USER_OPTIONS = {
-    search: 'Искать! 🥰'
+    search: 'Искать! 🥰',
 }
 
 module.exports = {
-    USER_OPTIONS
+    USER_OPTIONS,
 }
