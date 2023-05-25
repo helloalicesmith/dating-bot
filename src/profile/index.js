@@ -4,7 +4,7 @@ const conversation = require('./conversation/index.js')
 
 const composer = new Composer()
 
-composer.use(menu)
 composer.use(conversation)
+composer.use(menu)
 
 module.exports = composer
