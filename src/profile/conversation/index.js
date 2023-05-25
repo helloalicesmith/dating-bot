@@ -1,6 +1,6 @@
 const { createConversation } = require('@grammyjs/conversations')
 
-const Composer = require('../composer.js')
+const Composer = require('../../composer.js')
 const {
     nameConversation,
     oldConversation,

@@ -1,5 +1,5 @@
-const { userKeyboard } = require('../keyboards/user-keyboard')
-const api = require('../api/api')
+const { userKeyboard } = require('../../keyboards/user-keyboard')
+const api = require('../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
     const { message, from } = await conversation.wait()

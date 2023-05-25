@@ -1,9 +1,6 @@
 const { Menu } = require('@grammyjs/menu')
 
-const {
-    locationKeyboard,
-    genderKeyboard,
-} = require('../keyboards/user-keyboard')
+const { locationKeyboard, genderKeyboard } = require('../keyboards/index')
 
 const main = new Menu('root-profile-menu').submenu(
     (ctx) => ctx.t('menu.main-profile-settings'),
@@ -11,27 +8,36 @@ const main = new Menu('root-profile-menu').submenu(
 )
 
 const settingsSubmenu = new Menu('settings-profile-submenu')
-    .text('😌 Имя', async (ctx) => {
-        await ctx.reply('Пожалуйста введите своё имя')
+    .text(
+        (ctx) => ctx.t('menu.submenu-profile-settings-name'),
+        async (ctx) => {
+            await ctx.reply('Пожалуйста введите своё имя')
 
-        return await ctx.conversation.enter('nameConversation')
-    })
+            return await ctx.conversation.enter('nameConversation')
+        }
+    )
     .row()
-    .text('👵 Возраст️', async (ctx) => {
-        await ctx.reply('Пожалуйста введите ваш возраст')
+    .text(
+        (ctx) => ctx.t('menu.submenu-profile-settings-old'),
+        async (ctx) => {
+            await ctx.reply('Пожалуйста введите ваш возраст')
 
-        return await ctx.conversation.enter('oldConversation')
-    })
+            return await ctx.conversation.enter('oldConversation')
+        }
+    )
     .row()
-    .text('Пол', async (ctx) => {
-        const keyboard = genderKeyboard(ctx)
+    .text(
+        (ctx) => ctx.t('menu.submenu-profile-settings-gender'),
+        async (ctx) => {
+            const keyboard = genderKeyboard(ctx)
 
-        await ctx.reply('Пожалуйста введите ваш пол', {
-            reply_markup: keyboard,
-        })
+            await ctx.reply('Пожалуйста введите ваш пол', {
+                reply_markup: keyboard,
+            })
 
-        return await ctx.conversation.enter('genderConversation')
-    })
+            return await ctx.conversation.enter('genderConversation')
+        }
+    )
     .row()
     .submenu('🏘️ город', 'settings-profile-cities-submenu')
     .row()

@@ -2,9 +2,9 @@ const { Bot, session } = require('grammy')
 const { conversations } = require('@grammyjs/conversations')
 const { I18n } = require('@grammyjs/i18n')
 
-const userConversations = require('./conversation/index')
-const menu = require('./menu/index')
 const handlers = require('./handlers/index')
+const profile = require('./profile/index')
+
 require('dotenv').config()
 
 const bot = new Bot(process.env.TOKEN)
@@ -23,9 +23,8 @@ bot.use(
 bot.use(i18n)
 
 bot.use(conversations())
-bot.use(userConversations)
 
-bot.use(menu)
+bot.use(profile)
 
 bot.use(handlers)
 

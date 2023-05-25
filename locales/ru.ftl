@@ -1,5 +1,3 @@
-settingsmain =
-    .search = Искать! 🥰
 keyboard =
     .main-search = Искать! 🥰
     .settings-gender-male = Мужской
@@ -16,3 +14,7 @@ menu =
     .main-profile-settings = Изменить профиль ⚙️
     .submenu-profile-settings-cities-location = Добавить город по геолокации
     .submenu-profile-settings-cities-confirm = Пожалуйста добавте геолокацию
+    .submenu-profile-settings-name = 😌 Имя
+    .submenu-profile-settings-old = Возраст
+    .submenu-profile-settings-gender = Пол
+    .submenu-profile-settings-city = Город
