@@ -3,6 +3,7 @@ const Composer = require('../composer.js')
 const api = require('../api/api.js')
 
 const { profileMenu } = require('../profile/menu/index')
+const { filtersMenu } = require('../filters/menu/index')
 const { getUserProfileToHTML } = require('../helpers/html.js')
 const { userToProfileObject } = require('../mappers/user.js')
 
@@ -23,7 +24,7 @@ const checkProfile = async (ctx) => {
         })
     }
 
-    await ctx.reply(text, {
+    return await ctx.reply(text, {
         reply_markup: userKeyboard,
     })
 }
@@ -37,8 +38,16 @@ const getMyProfileOptions = async (ctx) => {
 }
 
 const getMyProfileFilter = async (ctx) => {
-    await ctx.reply('Этот функционал еще не сделан :(', {
-        // reply_markup: filtersMenu,
+    const { id } = ctx.message.from
+
+    const { data } = await api.filtersService.getUserFilters(id)
+
+    if (!data) {
+        await api.filtersService.createFilters(id, {})
+    }
+
+    return await ctx.reply(ctx.t('menu.filters_text'), {
+        reply_markup: filtersMenu,
     })
 }
 

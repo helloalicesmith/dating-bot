@@ -11,6 +11,7 @@ profile =
     .old-added = Ваш возраст успешно обновлен!
     .location-added = Геолокация успешно добалена 👌🏻
 menu =
+    ### profile
     .main-profile-settings = Изменить профиль ⚙️
     .submenu-profile-settings-cities-location = Добавить город по геолокации
     .submenu-profile-settings-cities-confirm = Пожалуйста добавте геолокацию
@@ -18,3 +19,12 @@ menu =
     .submenu-profile-settings-old = Возраст
     .submenu-profile-settings-gender = Пол
     .submenu-profile-settings-city = Город
+    ### filters
+    .filters_text = Кого я ищу ?
+    .filters_old = Возраст
+    .filters_gender = Пол
+    .filters_city = Город
+filters =
+    .add_success = Фильтр успешно добавлен
+    .old_confirm = Пожалуйста укажите возраст который вы ищите
+    .gender_confirm = Пожалуйста укажите пол который вы ищите
