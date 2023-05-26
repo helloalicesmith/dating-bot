@@ -29,7 +29,13 @@ bot.use(filters)
 
 bot.use(handlers)
 
-bot.catch(console.error)
+bot.catch((err) => {
+    const ctx = err.ctx
+    const e = err.error
+
+    console.log(e)
+    ctx.reply(ctx.t('common.error'))
+})
 
 bot.api.setMyCommands([
     { command: 'start', description: 'Начать' },

@@ -6,7 +6,27 @@ const { userKeyboard } = require('../keyboards/user-keyboard.js')
 const composer = new Composer().on('message')
 
 const searchUser = async (ctx) => {
-    await ctx.reply('Этот функционал еще не сделан :(')
+    try {
+        const { id } = ctx.message.from
+        const { data } = await api.searchService.getSearchUsers(id)
+
+        if (!data) {
+            return await ctx.reply(ctx.t('search.noresult'))
+        }
+
+        console.log(data)
+        return await ctx.reply('good!')
+    } catch (err) {
+        if (err.response.data.error === 'filters is empty') {
+            return await ctx.reply(ctx.t('search.empty_filters'))
+        }
+
+        if (err.response.data.error === 'profile is empty') {
+            return await ctx.reply(ctx.t('empty_profile'))
+        }
+
+        throw err
+    }
 }
 
 const getLocation = async (ctx) => {

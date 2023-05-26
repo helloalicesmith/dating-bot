@@ -1,8 +1,5 @@
 const { Keyboard } = require('grammy')
 
-const userKeyboard = (ctx) =>
-    new Keyboard().text(ctx.t('keyboard.main-search')).resized()
-
 const locationKeyboard = (ctx) =>
     new Keyboard()
         .requestLocation(ctx.t('keyboard.settings-location'))
@@ -16,7 +13,6 @@ const genderKeyboard = (ctx) =>
         .oneTime()
 
 module.exports = {
-    userKeyboard,
     locationKeyboard,
     genderKeyboard,
 }

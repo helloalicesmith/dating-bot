@@ -1,4 +1,4 @@
-const { userKeyboard } = require('../../keyboards/user-keyboard')
+const { userKeyboard } = require('../../common/keyboards')
 const api = require('../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
