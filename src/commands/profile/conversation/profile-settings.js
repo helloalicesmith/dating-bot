@@ -1,5 +1,6 @@
 const { userKeyboard } = require('../../../common/keyboards')
 const { isNameValid, isOldValid } = require('../../../validators/index')
+const { locationKeyboard } = require('../keyboards/index')
 const api = require('../../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
@@ -72,8 +73,44 @@ const genderConversation = async (conversation, ctx) => {
     }
 }
 
+const cityConversation = async (conversation, ctx) => {
+    while (true) {
+        const { message, from } = await conversation.wait()
+
+        const location = message.location
+
+        if (!location) {
+            await ctx.reply(ctx.t('profile.location_failure'), {
+                reply_markup: locationKeyboard(ctx),
+            })
+            continue
+        }
+
+        const { id } = from
+        const { latitude: lat, longitude: long } = location
+
+        const { data } = await api.geoService.getLocationByLatLong({
+            lat,
+            long,
+        })
+
+        // TODO save city by user local
+        const city = data[0].local_names.ru
+
+        await api.usersService.updateUser(id, {
+            city,
+        })
+
+        await ctx.reply(ctx.t('profile.location_success'), {
+            reply_markup: userKeyboard(ctx),
+        })
+        break
+    }
+}
+
 module.exports = {
     nameConversation,
     oldConversation,
     genderConversation,
+    cityConversation,
 }

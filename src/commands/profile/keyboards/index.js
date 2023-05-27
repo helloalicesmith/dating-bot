@@ -1,7 +1,10 @@
 const { Keyboard } = require('grammy')
 
 const locationKeyboard = (ctx) =>
-    new Keyboard().requestLocation(ctx.t('profile.keyboard_location')).resized()
+    new Keyboard()
+        .requestLocation(ctx.t('profile.keyboard_location'))
+        .oneTime()
+        .resized()
 
 const genderKeyboard = (ctx) =>
     new Keyboard()
