@@ -2,9 +2,10 @@ const { Bot, session } = require('grammy')
 const { conversations } = require('@grammyjs/conversations')
 const { I18n } = require('@grammyjs/i18n')
 
-const handlers = require('./handlers/index')
-const profile = require('./profile/index')
-const filters = require('./filters/index')
+const profile = require('./commands/profile/index')
+const filters = require('./commands/filters/index')
+const start = require('./commands/start/index')
+const search = require('./commands/search/index')
 
 require('dotenv').config()
 
@@ -24,10 +25,12 @@ bot.use(
 bot.use(i18n)
 
 bot.use(conversations())
+
+// commands
+bot.use(start)
 bot.use(profile)
 bot.use(filters)
-
-bot.use(handlers)
+bot.use(search)
 
 bot.catch((err) => {
     const ctx = err.ctx

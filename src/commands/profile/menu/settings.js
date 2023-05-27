@@ -23,16 +23,11 @@ const settingsSubmenu = new Menu('settings-profile-submenu')
     .row()
     .text(getLocaleText('profile.menu_settings_gender'), settingsGenderHandler)
     .row()
-    .submenu('🏘️ город', 'settings-profile-cities-submenu')
+    .text(getLocaleText('profile.menu_settings_city'), settingsCitiesHandler)
     .row()
     .back('<< Назад')
 
-const citiesSubmenu = new Menu('settings-profile-cities-submenu')
-    .text(getLocaleText('profile.menu_settings_city'), settingsCitiesHandler)
-    .row()
-    .back('<< Назад', async (ctx) => ctx.menu.nav('settings-profile-submenu'))
-
-main.register([settingsSubmenu, citiesSubmenu])
+main.register([settingsSubmenu])
 
 module.exports = {
     profileMenu: main,

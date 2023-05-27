@@ -24,9 +24,10 @@ const settingsGenderHandler = async (ctx) => {
 
 const settingsCitiesHandler = async (ctx) => {
     return await ctx.reply(ctx.t('profile.menu_settings_city_confirm'), {
-        reply_markup: locationKeyboard,
+        reply_markup: locationKeyboard(ctx),
     })
 }
+
 module.exports = {
     settingsNameHandler,
     settingsOldHandler,

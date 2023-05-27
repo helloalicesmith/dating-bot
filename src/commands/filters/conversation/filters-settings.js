@@ -1,6 +1,6 @@
-const { userKeyboard } = require('../../common/keyboards')
-const { isOldValid } = require('../../validators/index')
-const api = require('../../api/api')
+const { userKeyboard } = require('../../../common/keyboards')
+const { isOldValid } = require('../../../validators/index')
+const api = require('../../../api/api')
 
 const filtersOldConversation = async (conversation, ctx) => {
     while (true) {

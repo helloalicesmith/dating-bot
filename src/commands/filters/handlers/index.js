@@ -1,4 +1,4 @@
-const { genderKeyboard } = require('../../common/keyboards')
+const { genderKeyboard } = require('../../../common/keyboards')
 
 const filtersOldHandler = async (ctx) => {
     await ctx.reply(ctx.t('filters.old_confirm'))
