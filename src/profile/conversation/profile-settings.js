@@ -1,33 +1,45 @@
 const { userKeyboard } = require('../../common/keyboards')
-const { isNameValid } = require('../../validators/index')
+const { isNameValid, isOldValid } = require('../../validators/index')
 const api = require('../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
-    const { message, from } = await conversation.wait()
-    const name = message.text
+    while (true) {
+        const { message, from } = await conversation.wait()
+        const name = message.text
 
-    if (!isNameValid(name)) {
-        return await ctx.reply(ctx.t('profile.name_failure'))
+        if (!isNameValid(name)) {
+            await ctx.reply(ctx.t('profile.name_failure'))
+            continue
+        }
+
+        await api.usersService.updateUser(from.id, { name })
+
+        await ctx.reply(ctx.t('profile.name_success', { name }), {
+            reply_markup: userKeyboard(ctx),
+            parse_mode: 'HTML',
+        })
+        break
     }
-
-    await api.usersService.updateUser(from.id, { name })
-
-    return await ctx.reply(ctx.t('profile.name_success', { name }), {
-        reply_markup: userKeyboard(ctx),
-        parse_mode: 'HTML',
-    })
 }
 
 const oldConversation = async (conversation, ctx) => {
-    const { message, from } = await conversation.wait()
+    while (true) {
+        const { message, from } = await conversation.wait()
 
-    const old = message.text
+        const old = message.text
 
-    await api.usersService.updateUser(from.id, { old })
+        if (!isOldValid(Number(old))) {
+            await ctx.reply(ctx.t('profile.old_failure'))
+            continue
+        }
 
-    return await ctx.reply(ctx.t('profile.old_success'), {
-        reply_markup: userKeyboard(ctx),
-    })
+        await api.usersService.updateUser(from.id, { old })
+
+        await ctx.reply(ctx.t('profile.old_success'), {
+            reply_markup: userKeyboard(ctx),
+        })
+        break
+    }
 }
 
 const genderConversation = async (conversation, ctx) => {
