@@ -12,35 +12,23 @@ const {
 const getLocaleText = (value) => (ctx) => ctx.t(value)
 
 const main = new Menu('root-profile-menu').submenu(
-    getLocaleText('menu.main-profile-settings'),
+    getLocaleText('profile.menu_settings'),
     'settings-profile-submenu'
 )
 
 const settingsSubmenu = new Menu('settings-profile-submenu')
-    .text(
-        getLocaleText('menu.submenu-profile-settings-name'),
-        settingsNameHandler
-    )
+    .text(getLocaleText('profile.menu_settings_name'), settingsNameHandler)
     .row()
-    .text(
-        getLocaleText('menu.submenu-profile-settings-old'),
-        settingsOldHandler
-    )
+    .text(getLocaleText('profile.menu_settings_old'), settingsOldHandler)
     .row()
-    .text(
-        getLocaleText('menu.submenu-profile-settings-gender'),
-        settingsGenderHandler
-    )
+    .text(getLocaleText('profile.menu_settings_gender'), settingsGenderHandler)
     .row()
     .submenu('🏘️ город', 'settings-profile-cities-submenu')
     .row()
     .back('<< Назад')
 
 const citiesSubmenu = new Menu('settings-profile-cities-submenu')
-    .text(
-        getLocaleText('menu.submenu-profile-settings-cities-location'),
-        settingsCitiesHandler
-    )
+    .text(getLocaleText('profile.menu_settings_city'), settingsCitiesHandler)
     .row()
     .back('<< Назад', async (ctx) => ctx.menu.nav('settings-profile-submenu'))
 

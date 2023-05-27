@@ -49,12 +49,12 @@ const getLocation = async (ctx) => {
         city,
     })
 
-    return await ctx.reply(ctx.t('profile.location-added'), {
+    return await ctx.reply(ctx.t('profile.location_success'), {
         reply_markup: userKeyboard,
     })
 }
 
-composer.filter(hears('keyboard.main-search'), searchUser)
+composer.filter(hears('common.keyboard_search'), searchUser)
 composer.on('msg:location', getLocation)
 
 module.exports = composer

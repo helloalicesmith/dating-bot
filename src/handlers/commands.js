@@ -46,7 +46,7 @@ const getFilters = async (ctx) => {
         await api.filtersService.createFilters(id, {})
     }
 
-    return await ctx.reply(ctx.t('menu.filters_text'), {
+    return await ctx.reply(ctx.t('filters.menu_text'), {
         reply_markup: filtersMenu,
     })
 }

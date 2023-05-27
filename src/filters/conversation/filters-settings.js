@@ -19,29 +19,29 @@ const filtersGenderConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
 
-        if (ctx.t('keyboard.settings-gender-male') === message.text) {
+        if (ctx.t('common.keyboard_gender_male') === message.text) {
             await api.filtersService.updateFilters(from.id, {
                 gender: 'male',
             })
 
-            await ctx.reply(ctx.t('profile.gender-added'), {
+            await ctx.reply(ctx.t('profile.gender_success'), {
                 reply_markup: userKeyboard(ctx),
             })
             break
         }
 
-        if (ctx.t('keyboard.settings-gender-female') === message.text) {
+        if (ctx.t('common.keyboard_gender_female') === message.text) {
             await api.filtersService.updateFilters(from.id, {
                 gender: 'female',
             })
 
-            await ctx.reply(ctx.t('profile.gender-added'), {
+            await ctx.reply(ctx.t('profile.gender_success'), {
                 reply_markup: userKeyboard(ctx),
             })
             break
         }
 
-        await ctx.reply(ctx.t('profile.gender-error'))
+        await ctx.reply(ctx.t('profile.gender_failure'))
     }
 }
 
