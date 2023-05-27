@@ -1,18 +1,27 @@
 const { userKeyboard } = require('../../common/keyboards')
+const { isOldValid } = require('../../validators/index')
 const api = require('../../api/api')
 
 const filtersOldConversation = async (conversation, ctx) => {
-    const { message, from } = await conversation.wait()
+    while (true) {
+        const { message, from } = await conversation.wait()
 
-    const old = message.text
+        const old = message.text
 
-    await api.filtersService.updateFilters(from.id, {
-        old,
-    })
+        if (!isOldValid(Number(old))) {
+            await ctx.reply(ctx.t('filters.old_failure'))
+            continue
+        }
 
-    return await ctx.reply(ctx.t('filters.add_success'), {
-        reply_markup: userKeyboard(ctx),
-    })
+        await api.filtersService.updateFilters(from.id, {
+            old,
+        })
+
+        await ctx.reply(ctx.t('filters.add_success'), {
+            reply_markup: userKeyboard(ctx),
+        })
+        break
+    }
 }
 
 const filtersGenderConversation = async (conversation, ctx) => {
@@ -24,7 +33,7 @@ const filtersGenderConversation = async (conversation, ctx) => {
                 gender: 'male',
             })
 
-            await ctx.reply(ctx.t('profile.gender_success'), {
+            await ctx.reply(ctx.t('filters.gender_success'), {
                 reply_markup: userKeyboard(ctx),
             })
             break
@@ -35,13 +44,13 @@ const filtersGenderConversation = async (conversation, ctx) => {
                 gender: 'female',
             })
 
-            await ctx.reply(ctx.t('profile.gender_success'), {
+            await ctx.reply(ctx.t('filters.gender_success'), {
                 reply_markup: userKeyboard(ctx),
             })
             break
         }
 
-        await ctx.reply(ctx.t('profile.gender_failure'))
+        await ctx.reply(ctx.t('filters.gender_failure'))
     }
 }
 
