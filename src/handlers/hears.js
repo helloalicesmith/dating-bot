@@ -14,15 +14,20 @@ const searchUser = async (ctx) => {
             return await ctx.reply(ctx.t('search.noresult'))
         }
 
-        console.log(data)
-        return await ctx.reply('good!')
+        return await ctx.reply(
+            ctx.t('search.profile', {
+                name: data.name,
+                old: data.old,
+            }),
+            { parse_mode: 'HTML' }
+        )
     } catch (err) {
-        if (err.response.data.error === 'filters is empty') {
+        if (err.response.data.error === 'filters_is_empty') {
             return await ctx.reply(ctx.t('search.empty_filters'))
         }
 
-        if (err.response.data.error === 'profile is empty') {
-            return await ctx.reply(ctx.t('empty_profile'))
+        if (err.response.data.error === 'profile_is_empty') {
+            return await ctx.reply(ctx.t('search.empty_profile'))
         }
 
         throw err

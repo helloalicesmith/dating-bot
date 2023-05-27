@@ -32,9 +32,10 @@ search =
     .field_name = Имя
     .field_old = Возраст
     .field_city = Город
-    .profile = <b>Имя {$name}</b>\n<b>Возраст {$old}</b>
+    .profile = <b>Имя: {$name}</b>
+               <b>Возраст: {$old}</b>
     .noresult = ничего не найдено
-    .empty_filters = не заполнены фильтры
-    .empty_profile = не заполнен профиль
+    .empty_filters = не заполнены фильтры /filters
+    .empty_profile = не заполнен профиль /profile
 common =
     .error = что то пошло не так. повторите попыткy
