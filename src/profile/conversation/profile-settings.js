@@ -1,13 +1,18 @@
 const { userKeyboard } = require('../../common/keyboards')
+const { isNameValid } = require('../../validators/index')
 const api = require('../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
     const { message, from } = await conversation.wait()
     const name = message.text
 
+    if (!isNameValid(name)) {
+        return await ctx.reply(ctx.t('profile.name_failure'))
+    }
+
     await api.usersService.updateUser(from.id, { name })
 
-    return await ctx.reply(`Ваше имя успешно обновлено, <b>${name}</b>!`, {
+    return await ctx.reply(ctx.t('profile.name_success', { name }), {
         reply_markup: userKeyboard(ctx),
         parse_mode: 'HTML',
     })
