@@ -10,7 +10,11 @@ const genderKeyboard = (ctx) =>
         .resized()
         .oneTime()
 
+const cancelKeyboard = (ctx) =>
+    new Keyboard().text(ctx.t('common.cancel')).resized().oneTime()
+
 module.exports = {
     userKeyboard,
     genderKeyboard,
+    cancelKeyboard,
 }

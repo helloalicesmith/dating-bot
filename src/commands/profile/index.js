@@ -1,5 +1,3 @@
-const { InputFile } = require('grammy')
-
 const Composer = require('../../composer.js')
 const { composer: menu, profileMenu } = require('./menu/index.js')
 const conversation = require('./conversation/index.js')
@@ -10,11 +8,16 @@ const composer = new Composer()
 const profileCommand = async (ctx) => {
     const { id } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
-
     const { name, old, gender, city, images } = data
-    const imagesPath = `http://localhost:3000/${images[0]}`
-
+    const mediaGroup = []
     let tGender = ''
+
+    for (const it of images) {
+        mediaGroup.push({
+            type: 'photo',
+            media: it,
+        })
+    }
 
     if (gender === 'male') {
         tGender = ctx.t('profile.print_gender_male')
@@ -31,7 +34,7 @@ const profileCommand = async (ctx) => {
         city: city ?? ctx.t('profile.print_nullvalue'),
     })
 
-    // await ctx.replyWithPhoto(imagesPath)
+    await ctx.replyWithMediaGroup(mediaGroup)
     await ctx.reply(profile, { reply_markup: profileMenu, parse_mode: 'HTML' })
 }
 

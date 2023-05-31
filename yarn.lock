@@ -76,6 +76,11 @@
     debug "^4.3.4"
     o-son "^1.0.0"
 
+"@grammyjs/files@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@grammyjs/files/-/files-1.0.4.tgz#255d8e92bde0f43768840b80a230394f0a97dba6"
+  integrity sha512-GT7JWRH9cs5kIrBtUGwMwVEhb1w7Vtnc93UT3zM/HYigmeVd93wWaIqyuSYsZq1VIB+9CSk0oz+ZsnxK83z7tg==
+
 "@grammyjs/i18n@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@grammyjs/i18n/-/i18n-1.0.1.tgz#c51cef83a656884389b51e665b9524e8248cc4e8"

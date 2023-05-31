@@ -1,6 +1,7 @@
 const { Bot, session } = require('grammy')
 const { conversations } = require('@grammyjs/conversations')
 const { I18n } = require('@grammyjs/i18n')
+const { hydrateFiles } = require('@grammyjs/files')
 
 const profile = require('./commands/profile/index')
 const filters = require('./commands/filters/index')
@@ -10,6 +11,8 @@ const search = require('./commands/search/index')
 require('dotenv').config()
 
 const bot = new Bot(process.env.TOKEN)
+
+bot.api.config.use(hydrateFiles(bot.token))
 
 const i18n = new I18n({
     defaultLocale: 'ru',

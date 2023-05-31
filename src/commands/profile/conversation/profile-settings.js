@@ -6,19 +6,24 @@ const api = require('../../../api/api')
 const nameConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
-        const name = message.text
+        const { text } = message
 
-        if (!isNameValid(name)) {
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
+
+        if (!isNameValid(text)) {
             await ctx.reply(ctx.t('profile.name_failure'))
             continue
         }
 
-        await api.usersService.updateUser(from.id, { name })
+        await api.usersService.updateUser(from.id, { name: text })
 
-        await ctx.reply(ctx.t('profile.name_success', { name }), {
+        await ctx.reply(ctx.t('profile.name_success', { name: text }), {
             reply_markup: userKeyboard(ctx),
             parse_mode: 'HTML',
         })
+
         break
     }
 }
@@ -26,15 +31,18 @@ const nameConversation = async (conversation, ctx) => {
 const oldConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
+        const { text } = message
 
-        const old = message.text
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
 
-        if (!isOldValid(Number(old))) {
+        if (!isOldValid(Number(text))) {
             await ctx.reply(ctx.t('profile.old_failure'))
             continue
         }
 
-        await api.usersService.updateUser(from.id, { old })
+        await api.usersService.updateUser(from.id, { old: text })
 
         await ctx.reply(ctx.t('profile.old_success'), {
             reply_markup: userKeyboard(ctx),
@@ -46,8 +54,13 @@ const oldConversation = async (conversation, ctx) => {
 const genderConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
+        const { text } = message
 
-        if (ctx.t('common.keyboard_gender_male') === message.text) {
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
+
+        if (ctx.t('common.keyboard_gender_male') === text) {
             await api.usersService.updateUser(from.id, {
                 gender: 'male',
             })
@@ -58,7 +71,7 @@ const genderConversation = async (conversation, ctx) => {
             break
         }
 
-        if (ctx.t('common.keyboard_gender_female') === message.text) {
+        if (ctx.t('common.keyboard_gender_female') === text) {
             await api.usersService.updateUser(from.id, {
                 gender: 'female',
             })
@@ -76,8 +89,11 @@ const genderConversation = async (conversation, ctx) => {
 const cityConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
+        const { text, location } = message
 
-        const location = message.location
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
 
         if (!location) {
             await ctx.reply(ctx.t('profile.location_failure'), {
@@ -108,9 +124,37 @@ const cityConversation = async (conversation, ctx) => {
     }
 }
 
+const photoConversation = async (conversation, ctx) => {
+    while (true) {
+        const { message, from } = await conversation.wait()
+        const { text, photo } = message
+
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
+
+        if (!photo) {
+            await ctx.reply(ctx.t('profile.photo_failure'))
+            continue
+        }
+
+        const { file_id } = photo[0]
+
+        await api.usersService.updateUser(from.id, {
+            images: file_id,
+        })
+
+        await ctx.reply(ctx.t('profile.photo_success'), {
+            reply_markup: userKeyboard(ctx),
+        })
+        break
+    }
+}
+
 module.exports = {
     nameConversation,
     oldConversation,
     genderConversation,
     cityConversation,
+    photoConversation,
 }
