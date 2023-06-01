@@ -12,10 +12,11 @@ const {
 
 const getLocaleText = (value) => (ctx) => ctx.t(value)
 
-const main = new Menu('root-profile-menu').submenu(
-    getLocaleText('profile.menu_settings'),
-    'settings-profile-submenu'
-)
+const main = new Menu('root-profile-menu')
+    .submenu(getLocaleText('profile.menu_settings'), 'settings-profile-submenu')
+    .row()
+    .text(getLocaleText('profile.menu_settings_photo'), settingsPhotoHandler)
+    .row()
 
 const settingsSubmenu = new Menu('settings-profile-submenu')
     .text(getLocaleText('profile.menu_settings_name'), settingsNameHandler)
@@ -25,8 +26,6 @@ const settingsSubmenu = new Menu('settings-profile-submenu')
     .text(getLocaleText('profile.menu_settings_gender'), settingsGenderHandler)
     .row()
     .text(getLocaleText('profile.menu_settings_city'), settingsCitiesHandler)
-    .row()
-    .text(getLocaleText('profile.menu_settings_photo'), settingsPhotoHandler)
     .row()
     .back('<< Назад')
 

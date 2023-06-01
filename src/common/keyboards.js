@@ -7,6 +7,7 @@ const genderKeyboard = (ctx) =>
     new Keyboard()
         .text(ctx.t('common.keyboard_gender_male'))
         .text(ctx.t('common.keyboard_gender_female'))
+        .text(ctx.t('common.cancel'))
         .resized()
         .oneTime()
 

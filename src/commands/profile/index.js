@@ -9,15 +9,9 @@ const profileCommand = async (ctx) => {
     const { id } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
     const { name, old, gender, city, images } = data
-    const mediaGroup = []
     let tGender = ''
 
-    for (const it of images) {
-        mediaGroup.push({
-            type: 'photo',
-            media: it,
-        })
-    }
+    ctx.session.user = data
 
     if (gender === 'male') {
         tGender = ctx.t('profile.print_gender_male')
@@ -32,9 +26,9 @@ const profileCommand = async (ctx) => {
         old: old ?? ctx.t('profile.print_nullvalue'),
         gender: tGender ?? ctx.t('profile.print_nullvalue'),
         city: city ?? ctx.t('profile.print_nullvalue'),
+        imagesCount: images.length,
     })
 
-    await ctx.replyWithMediaGroup(mediaGroup)
     await ctx.reply(profile, { reply_markup: profileMenu, parse_mode: 'HTML' })
 }
 

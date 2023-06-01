@@ -1,5 +1,5 @@
-const { cancelKeyboard } = require('../../../common/keyboards')
-const { locationKeyboard, genderKeyboard } = require('../keyboards/index')
+const { cancelKeyboard, genderKeyboard } = require('../../../common/keyboards')
+const { locationKeyboard, photoKeyboard } = require('../keyboards/index')
 
 const settingsNameHandler = async (ctx) => {
     await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
@@ -34,9 +34,28 @@ const settingsCitiesHandler = async (ctx) => {
 }
 
 const settingsPhotoHandler = async (ctx) => {
-    await ctx.reply(ctx.t('profile.menu_settings_photo_confirm'), {
-        reply_markup: genderKeyboard(ctx),
-    })
+    const { images } = ctx.session.user
+
+    for (const idx in images) {
+        const count = +idx + 1
+
+        await ctx.reply(
+            ctx.t('profile.photo_count', {
+                count,
+            }),
+            { parse_mode: 'HTML' }
+        )
+        await ctx.replyWithPhoto(images[idx])
+    }
+
+    // await ctx.replyWithMediaGroup(mediaGroup)
+
+    await ctx.reply(
+        ctx.t('profile.menu_settings_photo_info', { images: images.length }),
+        {
+            reply_markup: photoKeyboard(ctx, images.length),
+        }
+    )
 
     return await ctx.conversation.enter('photoConversation')
 }

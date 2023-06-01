@@ -7,15 +7,19 @@ const locationKeyboard = (ctx) =>
         .oneTime()
         .resized()
 
-const genderKeyboard = (ctx) =>
-    new Keyboard()
-        .text(ctx.t('common.keyboard_gender_male'))
-        .text(ctx.t('common.keyboard_gender_female'))
-        .text(ctx.t('common.cancel'))
-        .resized()
-        .oneTime()
+const photoKeyboard = (ctx, imagesCount) => {
+    const keyboard = new Keyboard()
+
+    new Array(imagesCount).fill(null).forEach((_, idx) => {
+        const imagesCount = idx + 1
+
+        keyboard.text(ctx.t('profile.keyboard_photo_delete', { imagesCount }))
+    })
+
+    return keyboard.text(ctx.t('common.cancel')).resized()
+}
 
 module.exports = {
     locationKeyboard,
-    genderKeyboard,
+    photoKeyboard,
 }
