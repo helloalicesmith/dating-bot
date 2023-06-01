@@ -18,14 +18,6 @@ class UsersService {
     async updateUser(id, data) {
         return await this.connector.patch(`/users/${id}`, data)
     }
-
-    async createUserLocation(id, data) {
-        return await this.connector.post(`/location/${id}`, data)
-    }
-
-    async getUserLocation(id) {
-        return await this.connector.get(`/location/${id}`)
-    }
 }
 
 module.exports = UsersService

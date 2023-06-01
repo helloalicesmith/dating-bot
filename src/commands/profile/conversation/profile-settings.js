@@ -117,20 +117,15 @@ const cityConversation = async (conversation, ctx) => {
 
         const { lat, lon, country, name, local_names } = data[0]
 
-        const { data: userLocation } = await api.usersService.getUserLocation(
-            id
-        )
-
-        // TODO сделать локали динамичными
-        if (!userLocation) {
-            await api.usersService.createUserLocation(id, {
+        await api.usersService.updateUser(id, {
+            location: {
                 lat,
                 lon,
                 country,
                 name,
                 local_name: local_names[from.language_code] || local_names.en,
-            })
-        }
+            },
+        })
 
         await ctx.reply(ctx.t('profile.location_success'), {
             reply_markup: userKeyboard(ctx),
