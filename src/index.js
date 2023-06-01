@@ -40,7 +40,9 @@ bot.catch((err) => {
     const e = err.error
 
     console.log(e)
-    ctx.reply(ctx.t('common.error'))
+    ctx.reply(ctx.t('common.error'), {
+        reply_markup: { remove_keyboard: true },
+    })
 })
 
 bot.api.setMyCommands([

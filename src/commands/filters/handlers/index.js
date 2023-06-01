@@ -16,7 +16,12 @@ const filtersGenderHandler = async (ctx) => {
     return await ctx.conversation.enter('filtersGenderConversation')
 }
 
+const filtersCityHandler = async (ctx) => {
+    return await ctx.reply(ctx.t('filters.city_confirm'))
+}
+
 module.exports = {
     filtersOldHandler,
     filtersGenderHandler,
+    filtersCityHandler,
 }

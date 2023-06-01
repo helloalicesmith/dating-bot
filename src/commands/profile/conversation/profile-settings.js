@@ -195,11 +195,9 @@ const photoConversation = async (conversation, ctx) => {
             const newImages = [...images, photo[0].file_id]
 
             conversation.session.user.images = newImages
-            await conversation.external(() =>
-                api.usersService.updateUser(from.id, {
-                    images: newImages,
-                })
-            )
+            await api.usersService.updateUser(from.id, {
+                images: newImages,
+            })
 
             await ctx.reply(ctx.t('profile.photo_add_success'), {
                 reply_markup: photoKeyboard(ctx, newImages.length),

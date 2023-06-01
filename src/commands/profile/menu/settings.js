@@ -1,5 +1,6 @@
 const { Menu } = require('@grammyjs/menu')
 
+const { getLocaleText } = require('../../../helpers')
 const handlers = require('../handlers/index')
 
 const {
@@ -10,8 +11,6 @@ const {
     settingsPhotoHandler,
     settingsDescriptionHandler,
 } = handlers
-
-const getLocaleText = (value) => (ctx) => ctx.t(value)
 
 const main = new Menu('root-profile-menu')
     .submenu(getLocaleText('profile.menu_settings'), 'settings-profile-submenu')
