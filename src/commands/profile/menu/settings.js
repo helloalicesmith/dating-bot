@@ -8,6 +8,7 @@ const {
     settingsGenderHandler,
     settingsCitiesHandler,
     settingsPhotoHandler,
+    settingsDescriptionHandler,
 } = handlers
 
 const getLocaleText = (value) => (ctx) => ctx.t(value)
@@ -26,6 +27,11 @@ const settingsSubmenu = new Menu('settings-profile-submenu')
     .text(getLocaleText('profile.menu_settings_gender'), settingsGenderHandler)
     .row()
     .text(getLocaleText('profile.menu_settings_city'), settingsCitiesHandler)
+    .row()
+    .text(
+        getLocaleText('profile.menu_settings_description'),
+        settingsDescriptionHandler
+    )
     .row()
     .back('<< Назад')
 

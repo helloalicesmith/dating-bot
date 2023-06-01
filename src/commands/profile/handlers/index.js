@@ -48,8 +48,6 @@ const settingsPhotoHandler = async (ctx) => {
         await ctx.replyWithPhoto(images[idx])
     }
 
-    // await ctx.replyWithMediaGroup(mediaGroup)
-
     await ctx.reply(
         ctx.t('profile.menu_settings_photo_info', { images: images.length }),
         {
@@ -60,10 +58,19 @@ const settingsPhotoHandler = async (ctx) => {
     return await ctx.conversation.enter('photoConversation')
 }
 
+const settingsDescriptionHandler = async (ctx) => {
+    await ctx.reply(ctx.t('profile.menu_settings_description_confirm'), {
+        reply_markup: cancelKeyboard(ctx),
+    })
+
+    return await ctx.conversation.enter('descriptionConversation')
+}
+
 module.exports = {
     settingsNameHandler,
     settingsOldHandler,
     settingsGenderHandler,
     settingsCitiesHandler,
     settingsPhotoHandler,
+    settingsDescriptionHandler,
 }

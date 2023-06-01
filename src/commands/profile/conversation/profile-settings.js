@@ -215,10 +215,35 @@ const photoConversation = async (conversation, ctx) => {
     }
 }
 
+const descriptionConversation = async (conversation, ctx) => {
+    while (true) {
+        const { message, from } = await conversation.wait()
+        const { text } = message
+
+        if (text === ctx.t('common.cancel')) {
+            break
+        }
+
+        if (text.length > 200) {
+            await ctx.reply(ctx.t('profile.menu_settings_description_failure'))
+            continue
+        }
+
+        await api.usersService.updateUser(from.id, { description: text })
+
+        await ctx.reply(ctx.t('profile.menu_settings_description_success'), {
+            reply_markup: userKeyboard(ctx),
+        })
+
+        break
+    }
+}
+
 module.exports = {
     nameConversation,
     oldConversation,
     genderConversation,
     cityConversation,
     photoConversation,
+    descriptionConversation,
 }

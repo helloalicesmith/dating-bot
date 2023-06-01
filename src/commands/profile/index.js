@@ -8,7 +8,7 @@ const composer = new Composer()
 const profileCommand = async (ctx) => {
     const { id } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
-    const { name, old, gender, city, images } = data
+    const { name, old, gender, city, images, description } = data
     let tGender = ''
 
     ctx.session.user = data
@@ -26,6 +26,7 @@ const profileCommand = async (ctx) => {
         old: old ?? ctx.t('profile.print_nullvalue'),
         gender: tGender ?? ctx.t('profile.print_nullvalue'),
         city: city ?? ctx.t('profile.print_nullvalue'),
+        description: description ?? ctx.t('profile.print_nullvalue'),
         imagesCount: images.length,
     })
 
