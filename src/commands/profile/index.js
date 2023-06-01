@@ -29,7 +29,10 @@ const profileCommand = async (ctx) => {
         imagesCount: images.length,
     })
 
-    await ctx.reply(profile, { reply_markup: profileMenu, parse_mode: 'HTML' })
+    await ctx.reply(profile, {
+        reply_markup: profileMenu,
+        parse_mode: 'HTML',
+    })
 }
 
 composer.use(conversation)

@@ -1,5 +1,5 @@
 const isNameValid = (value) => {
-    const reg = /^[a-zA-Z ]{1,16}$/
+    const reg = /^[a-zA-Zа-яА-Я ]{1,16}$/
 
     return reg.test(value)
 }

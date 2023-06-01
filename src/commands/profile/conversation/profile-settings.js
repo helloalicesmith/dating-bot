@@ -4,11 +4,14 @@ const { isNameValid, isOldValid } = require('../../../validators/index')
 const { locationKeyboard } = require('../keyboards/index')
 const api = require('../../../api/api')
 
-const removeImagesById = (ctx, images) => async (idx) => {
+const removeImagesById = (ctx) => async (idx) => {
+    const { images } = ctx.session.user
     const { from } = ctx
     const newImages = [...images]
 
     newImages.splice(idx, 1)
+
+    ctx.session.user.images = newImages
 
     await api.usersService.updateUser(from.id, {
         images: newImages,
@@ -140,13 +143,12 @@ const cityConversation = async (conversation, ctx) => {
     }
 }
 
-const photoConversation = async (conversation) => {
+const photoConversation = async (conversation, ctx) => {
     while (true) {
-        const ctx = await conversation.wait()
+        const { message, from } = await conversation.wait()
 
-        const { message, from } = ctx
         const { text, photo } = message
-        const { images } = ctx.session.user
+        const { images } = conversation.session.user
 
         const selectDeleteFirst = ctx.t('profile.keyboard_photo_delete', {
             imagesCount: 1,
@@ -165,12 +167,7 @@ const photoConversation = async (conversation) => {
             break
         }
 
-        if (images.length >= 3) {
-            await ctx.reply(ctx.t('profile.photo_length_failure'))
-            continue
-        }
-
-        const removeImagesByIdFc = removeImagesById(ctx, images)
+        const removeImagesByIdFc = removeImagesById(ctx)
 
         if (text === selectDeleteFirst) {
             await removeImagesByIdFc(0)
@@ -178,12 +175,12 @@ const photoConversation = async (conversation) => {
         }
 
         if (text === selectDeleteSecond) {
-            removeImagesByIdFc(1)
+            await removeImagesByIdFc(1)
             continue
         }
 
         if (text === selectDeleteThird) {
-            removeImagesByIdFc(2)
+            await removeImagesByIdFc(2)
             continue
         }
 
@@ -191,22 +188,29 @@ const photoConversation = async (conversation) => {
             await ctx.reply(ctx.t('profile.photo_add_failure'))
             continue
         }
-        if (photo && images.length >= 3) {
-            await ctx.reply(ctx.t('profile.photo_length_failure'))
-            continue
-        }
 
         if (photo) {
+            if (images.length >= 3) {
+                await ctx.reply(ctx.t('profile.photo_length_failure'))
+                continue
+            }
+
             const newImages = [...images, photo[0].file_id]
 
-            await api.usersService.updateUser(from.id, {
-                images: newImages,
-            })
+            conversation.session.user.images = newImages
+            await conversation.external(() =>
+                api.usersService.updateUser(from.id, {
+                    images: newImages,
+                })
+            )
 
             await ctx.reply(ctx.t('profile.photo_add_success'), {
                 reply_markup: photoKeyboard(ctx, newImages.length),
             })
+
+            continue
         }
+        break
     }
 }
 
