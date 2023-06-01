@@ -159,6 +159,9 @@ const photoConversation = async (conversation) => {
         })
 
         if (text === ctx.t('common.cancel')) {
+            await ctx.reply(ctx.t('profile.photo_settings_cancel'), {
+                reply_markup: userKeyboard(ctx),
+            })
             break
         }
 
