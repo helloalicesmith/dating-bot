@@ -145,7 +145,8 @@ const cityConversation = async (conversation, ctx) => {
 
 const photoConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
+        const currentCtx = await conversation.wait()
+        const { message, from } = currentCtx
 
         const { text, photo } = message
         const { images } = conversation.session.user
@@ -167,7 +168,7 @@ const photoConversation = async (conversation, ctx) => {
             break
         }
 
-        const removeImagesByIdFc = removeImagesById(ctx)
+        const removeImagesByIdFc = removeImagesById(currentCtx)
 
         if (text === selectDeleteFirst) {
             await removeImagesByIdFc(0)
