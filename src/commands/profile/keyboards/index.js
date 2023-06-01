@@ -3,6 +3,7 @@ const { Keyboard } = require('grammy')
 const locationKeyboard = (ctx) =>
     new Keyboard()
         .requestLocation(ctx.t('profile.keyboard_location'))
+        .row()
         .text(ctx.t('common.cancel'))
         .oneTime()
         .resized()
@@ -16,7 +17,7 @@ const photoKeyboard = (ctx, imagesCount) => {
         keyboard.text(ctx.t('profile.keyboard_photo_delete', { imagesCount }))
     })
 
-    return keyboard.text(ctx.t('common.cancel')).resized()
+    return keyboard.row().text(ctx.t('common.done')).row().resized()
 }
 
 module.exports = {

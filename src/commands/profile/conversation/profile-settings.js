@@ -4,24 +4,6 @@ const { isNameValid, isOldValid } = require('../../../validators/index')
 const { locationKeyboard } = require('../keyboards/index')
 const api = require('../../../api/api')
 
-const removeImagesById = (ctx) => async (idx) => {
-    const { images } = ctx.session.user
-    const { from } = ctx
-    const newImages = [...images]
-
-    newImages.splice(idx, 1)
-
-    ctx.session.user.images = newImages
-
-    await api.usersService.updateUser(from.id, {
-        images: newImages,
-    })
-
-    await ctx.reply(ctx.t('profile.photo_delete_success'), {
-        reply_markup: photoKeyboard(ctx, newImages.length),
-    })
-}
-
 const nameConversation = async (conversation, ctx) => {
     while (true) {
         const { message, from } = await conversation.wait()
@@ -122,19 +104,33 @@ const cityConversation = async (conversation, ctx) => {
         }
 
         const { id } = from
-        const { latitude: lat, longitude: long } = location
+        const { latitude, longitude } = location
 
         const { data } = await api.geoService.getLocationByLatLong({
-            lat,
-            long,
+            lat: latitude,
+            long: longitude,
         })
 
-        // TODO save city by user local
-        const city = data[0].local_names.ru
+        if (!data || data.length === 0) {
+            break
+        }
 
-        await api.usersService.updateUser(id, {
-            city,
-        })
+        const { lat, lon, country, name, local_names } = data[0]
+
+        const { data: userLocation } = await api.usersService.getUserLocation(
+            id
+        )
+
+        // TODO сделать локали динамичными
+        if (!userLocation) {
+            await api.usersService.createUserLocation(id, {
+                lat,
+                lon,
+                country,
+                name,
+                local_name: local_names[from.language_code] || local_names.en,
+            })
+        }
 
         await ctx.reply(ctx.t('profile.location_success'), {
             reply_markup: userKeyboard(ctx),
@@ -161,7 +157,7 @@ const photoConversation = async (conversation, ctx) => {
             imagesCount: 3,
         })
 
-        if (text === ctx.t('common.cancel')) {
+        if (text === ctx.t('common.done')) {
             await ctx.reply(ctx.t('profile.photo_settings_cancel'), {
                 reply_markup: userKeyboard(ctx),
             })
@@ -185,7 +181,7 @@ const photoConversation = async (conversation, ctx) => {
             continue
         }
 
-        if (!photo) {
+        if (!photo || text) {
             await ctx.reply(ctx.t('profile.photo_add_failure'))
             continue
         }
@@ -236,6 +232,26 @@ const descriptionConversation = async (conversation, ctx) => {
         })
 
         break
+    }
+}
+
+function removeImagesById(ctx) {
+    return async (idx) => {
+        const { images } = ctx.session.user
+        const { from } = ctx
+        const newImages = [...images]
+
+        newImages.splice(idx, 1)
+
+        ctx.session.user.images = newImages
+
+        await api.usersService.updateUser(from.id, {
+            images: newImages,
+        })
+
+        await ctx.reply(ctx.t('profile.photo_delete_success'), {
+            reply_markup: photoKeyboard(ctx, newImages.length),
+        })
     }
 }
 

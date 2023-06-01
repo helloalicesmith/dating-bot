@@ -36,16 +36,8 @@ const settingsCitiesHandler = async (ctx) => {
 const settingsPhotoHandler = async (ctx) => {
     const { images } = ctx.session.user
 
-    for (const idx in images) {
-        const count = +idx + 1
-
-        await ctx.reply(
-            ctx.t('profile.photo_count', {
-                count,
-            }),
-            { parse_mode: 'HTML' }
-        )
-        await ctx.replyWithPhoto(images[idx])
+    for (const it of images) {
+        await ctx.replyWithPhoto(it)
     }
 
     await ctx.reply(
