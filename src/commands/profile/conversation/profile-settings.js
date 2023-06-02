@@ -6,7 +6,7 @@ const api = require('../../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
+        const { message, from } = await conversation.waitFor('message:text')
         const { text } = message
 
         if (text === ctx.t('common.cancel')) {
@@ -18,7 +18,9 @@ const nameConversation = async (conversation, ctx) => {
             continue
         }
 
-        await api.usersService.updateUser(from.id, { name: text })
+        await conversation.external(() =>
+            api.usersService.updateUser(from.id, { name: text })
+        )
 
         await ctx.reply(ctx.t('profile.name_success', { name: text }), {
             reply_markup: userKeyboard(ctx),
@@ -43,7 +45,9 @@ const oldConversation = async (conversation, ctx) => {
             continue
         }
 
-        await api.usersService.updateUser(from.id, { old: text })
+        await conversation.external(() =>
+            api.usersService.updateUser(from.id, { old: text })
+        )
 
         await ctx.reply(ctx.t('profile.old_success'), {
             reply_markup: userKeyboard(ctx),
@@ -62,9 +66,11 @@ const genderConversation = async (conversation, ctx) => {
         }
 
         if (ctx.t('common.keyboard_gender_male') === text) {
-            await api.usersService.updateUser(from.id, {
-                gender: 'male',
-            })
+            await conversation.external(() =>
+                api.usersService.updateUser(from.id, {
+                    gender: 'male',
+                })
+            )
 
             await ctx.reply(ctx.t('profile.gender_success'), {
                 reply_markup: userKeyboard(ctx),
@@ -73,9 +79,11 @@ const genderConversation = async (conversation, ctx) => {
         }
 
         if (ctx.t('common.keyboard_gender_female') === text) {
-            await api.usersService.updateUser(from.id, {
-                gender: 'female',
-            })
+            await conversation.external(() =>
+                api.usersService.updateUser(from.id, {
+                    gender: 'female',
+                })
+            )
 
             await ctx.reply(ctx.t('profile.gender_success'), {
                 reply_markup: userKeyboard(ctx),
@@ -106,10 +114,12 @@ const cityConversation = async (conversation, ctx) => {
         const { id } = from
         const { latitude, longitude } = location
 
-        const { data } = await api.geoService.getLocationByLatLong({
-            lat: latitude,
-            long: longitude,
-        })
+        const { data } = await conversation.external(() =>
+            api.geoService.getLocationByLatLong({
+                lat: latitude,
+                long: longitude,
+            })
+        )
 
         if (!data || data.length === 0) {
             break
@@ -117,15 +127,18 @@ const cityConversation = async (conversation, ctx) => {
 
         const { lat, lon, country, name, local_names } = data[0]
 
-        await api.usersService.updateUser(id, {
-            location: {
-                lat,
-                lon,
-                country,
-                name,
-                local_name: local_names[from.language_code] || local_names.en,
-            },
-        })
+        await conversation.external(() =>
+            api.usersService.updateUser(id, {
+                location: {
+                    lat,
+                    lon,
+                    country,
+                    name,
+                    local_name:
+                        local_names[from.language_code] || local_names.en,
+                },
+            })
+        )
 
         await ctx.reply(ctx.t('profile.location_success'), {
             reply_markup: userKeyboard(ctx),
@@ -190,9 +203,11 @@ const photoConversation = async (conversation, ctx) => {
             const newImages = [...images, photo[0].file_id]
 
             conversation.session.user.images = newImages
-            await api.usersService.updateUser(from.id, {
-                images: newImages,
-            })
+            await conversation.external(() =>
+                api.usersService.updateUser(from.id, {
+                    images: newImages,
+                })
+            )
 
             await ctx.reply(ctx.t('profile.photo_add_success'), {
                 reply_markup: photoKeyboard(ctx, newImages.length),
@@ -218,7 +233,9 @@ const descriptionConversation = async (conversation, ctx) => {
             continue
         }
 
-        await api.usersService.updateUser(from.id, { description: text })
+        await conversation.external(() =>
+            api.usersService.updateUser(from.id, { description: text })
+        )
 
         await ctx.reply(ctx.t('profile.menu_settings_description_success'), {
             reply_markup: userKeyboard(ctx),

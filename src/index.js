@@ -29,6 +29,18 @@ bot.use(i18n)
 
 bot.use(conversations())
 
+bot.use(async (ctx, next) => {
+    const { conversation } = ctx
+    const { update } = ctx
+    const active = await conversation.active()
+
+    if (Object.values(active).length > 0 && update.callback_query) {
+        await conversation.exit()
+    }
+
+    return next()
+})
+
 // commands
 bot.use(start)
 bot.use(profile)
