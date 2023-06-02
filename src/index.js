@@ -1,4 +1,5 @@
 const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const { Bot, session } = require('grammy')
 const { conversations } = require('@grammyjs/conversations')
 const { I18n } = require('@grammyjs/i18n')
@@ -8,8 +9,6 @@ const profile = require('./commands/profile/index')
 const filters = require('./commands/filters/index')
 const start = require('./commands/start/index')
 const search = require('./commands/search/index')
-
-require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
 const bot = new Bot(process.env.TOKEN)
 
