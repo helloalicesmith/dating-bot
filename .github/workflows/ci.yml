@@ -10,3 +10,15 @@ jobs:
               run: yarn install --frozen-lockfile
             - name: Lint
               run: yarn lint:check
+    build:
+        needs: [lint]
+        runs-on: self-hosted
+        steps:
+            - name: Deploy using ssh
+              run: yarn install --frozen-lockfile
+              run: cd /opt/uniconn-bot
+              run: git pull origin main
+              run: git status
+              run: yarn
+              run: pm2 restart uniconn-bot
+
