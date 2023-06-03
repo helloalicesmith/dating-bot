@@ -10,7 +10,12 @@ const filters = require('./commands/filters/index')
 const start = require('./commands/start/index')
 const search = require('./commands/search/index')
 
-const bot = new Bot(process.env.TOKEN)
+const token =
+    process.env.NODE_ENV === 'development'
+        ? process.env.DEV_TOKEN
+        : process.env.TOKEN
+
+const bot = new Bot(token)
 
 bot.api.config.use(hydrateFiles(bot.token))
 
