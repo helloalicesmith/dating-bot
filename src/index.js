@@ -37,9 +37,19 @@ bot.use(conversations())
 bot.use(async (ctx, next) => {
     const { conversation } = ctx
     const { update } = ctx
+    const { callback_query, message } = update
     const active = await conversation.active()
 
-    if (Object.values(active).length > 0 && update.callback_query) {
+    const isCallbackQuery = Object.values(active).length > 0 && callback_query
+    const isCancel =
+        Object.values(active).length > 0 &&
+        message?.text === ctx.t('common.cancel')
+    const isCommand =
+        Object.values(active).length > 0 &&
+        message?.text &&
+        message.text[0] === '/'
+
+    if (isCancel || isCallbackQuery || isCommand) {
         await conversation.exit()
     }
 
