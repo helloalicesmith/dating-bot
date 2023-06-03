@@ -6,12 +6,9 @@ const api = require('../../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.waitFor('message:text')
+        const q = await conversation.waitFor('message:text')
+        const { message, from } = q
         const { text } = message
-
-        if (text === ctx.t('common.cancel')) {
-            break
-        }
 
         if (!isNameValid(text)) {
             await ctx.reply(ctx.t('profile.name_failure'))
@@ -33,12 +30,8 @@ const nameConversation = async (conversation, ctx) => {
 
 const oldConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
+        const { message, from } = await conversation.waitFor('message:text')
         const { text } = message
-
-        if (text === ctx.t('common.cancel')) {
-            break
-        }
 
         if (!isOldValid(Number(text))) {
             await ctx.reply(ctx.t('profile.old_failure'))
@@ -58,12 +51,8 @@ const oldConversation = async (conversation, ctx) => {
 
 const genderConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
+        const { message, from } = await conversation.waitFor('message:text')
         const { text } = message
-
-        if (text === ctx.t('common.cancel')) {
-            break
-        }
 
         if (ctx.t('common.keyboard_gender_male') === text) {
             await conversation.external(() =>
@@ -97,12 +86,8 @@ const genderConversation = async (conversation, ctx) => {
 
 const cityConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
-        const { text, location } = message
-
-        if (text === ctx.t('common.cancel')) {
-            break
-        }
+        const { message, from } = await conversation.waitFor('message:location')
+        const { location } = message
 
         if (!location) {
             await ctx.reply(ctx.t('profile.location_failure'), {
@@ -149,7 +134,7 @@ const cityConversation = async (conversation, ctx) => {
 
 const photoConversation = async (conversation, ctx) => {
     while (true) {
-        const currentCtx = await conversation.wait()
+        const currentCtx = await conversation.waitFor('message:photo')
         const { message, from } = currentCtx
 
         const { text, photo } = message
@@ -221,12 +206,8 @@ const photoConversation = async (conversation, ctx) => {
 
 const descriptionConversation = async (conversation, ctx) => {
     while (true) {
-        const { message, from } = await conversation.wait()
+        const { message, from } = await conversation.waitFor('message:text')
         const { text } = message
-
-        if (text === ctx.t('common.cancel')) {
-            break
-        }
 
         if (text.length > 200) {
             await ctx.reply(ctx.t('profile.menu_settings_description_failure'))
