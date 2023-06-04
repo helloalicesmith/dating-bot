@@ -1,4 +1,4 @@
-const { userKeyboard } = require('../../../common/keyboards')
+const { searchKeyboard } = require('../../../common/keyboards')
 const { isOldValid } = require('../../../validators/index')
 const api = require('../../../api/api')
 
@@ -18,7 +18,7 @@ const filtersOldConversation = async (conversation, ctx) => {
         })
 
         await ctx.reply(ctx.t('filters.add_success'), {
-            reply_markup: userKeyboard(ctx),
+            reply_markup: searchKeyboard(ctx),
         })
         break
     }
@@ -34,7 +34,7 @@ const filtersGenderConversation = async (conversation, ctx) => {
             })
 
             await ctx.reply(ctx.t('filters.gender_success'), {
-                reply_markup: userKeyboard(ctx),
+                reply_markup: searchKeyboard(ctx),
             })
             break
         }
@@ -45,7 +45,7 @@ const filtersGenderConversation = async (conversation, ctx) => {
             })
 
             await ctx.reply(ctx.t('filters.gender_success'), {
-                reply_markup: userKeyboard(ctx),
+                reply_markup: searchKeyboard(ctx),
             })
             break
         }

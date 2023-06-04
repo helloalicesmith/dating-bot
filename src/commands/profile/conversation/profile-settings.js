@@ -1,4 +1,4 @@
-const { userKeyboard } = require('../../../common/keyboards')
+const { searchKeyboard } = require('../../../common/keyboards')
 const { photoKeyboard } = require('../keyboards/index')
 const { isNameValid, isOldValid } = require('../../../validators/index')
 const { locationKeyboard } = require('../keyboards/index')
@@ -20,7 +20,7 @@ const nameConversation = async (conversation, ctx) => {
         )
 
         await ctx.reply(ctx.t('profile.name_success', { name: text }), {
-            reply_markup: userKeyboard(ctx),
+            reply_markup: searchKeyboard(ctx),
             parse_mode: 'HTML',
         })
 
@@ -43,7 +43,7 @@ const oldConversation = async (conversation, ctx) => {
         )
 
         await ctx.reply(ctx.t('profile.old_success'), {
-            reply_markup: userKeyboard(ctx),
+            reply_markup: searchKeyboard(ctx),
         })
         break
     }
@@ -62,7 +62,7 @@ const genderConversation = async (conversation, ctx) => {
             )
 
             await ctx.reply(ctx.t('profile.gender_success'), {
-                reply_markup: userKeyboard(ctx),
+                reply_markup: searchKeyboard(ctx),
             })
             break
         }
@@ -75,7 +75,7 @@ const genderConversation = async (conversation, ctx) => {
             )
 
             await ctx.reply(ctx.t('profile.gender_success'), {
-                reply_markup: userKeyboard(ctx),
+                reply_markup: searchKeyboard(ctx),
             })
             break
         }
@@ -126,7 +126,7 @@ const cityConversation = async (conversation, ctx) => {
         )
 
         await ctx.reply(ctx.t('profile.location_success'), {
-            reply_markup: userKeyboard(ctx),
+            reply_markup: searchKeyboard(ctx),
         })
         break
     }
@@ -152,7 +152,7 @@ const photoConversation = async (conversation, ctx) => {
 
         if (text === ctx.t('common.done')) {
             await ctx.reply(ctx.t('profile.photo_settings_cancel'), {
-                reply_markup: userKeyboard(ctx),
+                reply_markup: searchKeyboard(ctx),
             })
             break
         }
@@ -219,7 +219,7 @@ const descriptionConversation = async (conversation, ctx) => {
         )
 
         await ctx.reply(ctx.t('profile.menu_settings_description_success'), {
-            reply_markup: userKeyboard(ctx),
+            reply_markup: searchKeyboard(ctx),
         })
 
         break
