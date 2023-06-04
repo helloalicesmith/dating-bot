@@ -3,12 +3,12 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const { Bot, session } = require('grammy')
 const { conversations } = require('@grammyjs/conversations')
 const { I18n } = require('@grammyjs/i18n')
-const { hydrateFiles } = require('@grammyjs/files')
 
 const profile = require('./commands/profile/index')
 const filters = require('./commands/filters/index')
 const start = require('./commands/start/index')
 const search = require('./commands/search/index')
+const { searchKeyboard } = require('./common/keyboards')
 
 const token =
     process.env.NODE_ENV === 'development'
@@ -16,8 +16,6 @@ const token =
         : process.env.TOKEN
 
 const bot = new Bot(token)
-
-bot.api.config.use(hydrateFiles(bot.token))
 
 const i18n = new I18n({
     defaultLocale: 'ru',
@@ -51,6 +49,20 @@ bot.use(async (ctx, next) => {
 
     if (isCancel || isCallbackQuery || isCommand) {
         await conversation.exit()
+    }
+
+    return next()
+})
+
+bot.use(async (ctx, next) => {
+    const { update } = ctx
+    const { message } = update
+    const isCancel = message?.text === ctx.t('common.cancel')
+
+    if (isCancel) {
+        await ctx.reply(ctx.t('common.cancel_confirm'), {
+            reply_markup: searchKeyboard(ctx),
+        })
     }
 
     return next()

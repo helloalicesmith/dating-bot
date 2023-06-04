@@ -1,6 +1,6 @@
 const { Keyboard } = require('grammy')
 
-const userKeyboard = (ctx) =>
+const searchKeyboard = (ctx) =>
     new Keyboard().text(ctx.t('common.keyboard_search')).resized()
 
 const genderKeyboard = (ctx) =>
@@ -15,7 +15,7 @@ const cancelKeyboard = (ctx) =>
     new Keyboard().text(ctx.t('common.cancel')).resized().oneTime()
 
 module.exports = {
-    userKeyboard,
+    searchKeyboard,
     genderKeyboard,
     cancelKeyboard,
 }
