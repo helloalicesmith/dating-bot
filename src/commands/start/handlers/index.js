@@ -1,4 +1,4 @@
-const { userKeyboard } = require('../../../common/keyboards')
+const { searchKeyboard } = require('../../../common/keyboards')
 const api = require('../../../api/api')
 
 const startHandler = async (ctx) => {
@@ -20,7 +20,7 @@ const startHandler = async (ctx) => {
 
     return await ctx.reply(text, {
         parse_mode: 'HTML',
-        reply_markup: userKeyboard,
+        reply_markup: searchKeyboard(ctx),
     })
 }
 
