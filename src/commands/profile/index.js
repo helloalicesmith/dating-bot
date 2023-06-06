@@ -1,15 +1,17 @@
 const Composer = require('../../composer.js')
-const { composer: menu, profileMenu } = require('./menu/index.js')
-const conversation = require('./conversation/index.js')
+const { composer: menu, profileMenu } = require('./menu')
+const conversation = require('./conversation')
+const { searchKeyboard } = require('../../common/keyboards.js')
 const { photoDeleteMiddleware } = require('./middleware')
 const api = require('../../api/api.js')
 
 const composer = new Composer()
 
 const profileCommand = async (ctx) => {
-    const { id } = ctx.message.from
+    const { id, language_code } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
-    const { name, old, gender, city, images, description } = data
+    const { name, old, gender, location, images, description } = data
+    const city = location.local_names && location.local_names[language_code]
     let tGender = ''
 
     ctx.session.user = data
@@ -34,6 +36,9 @@ const profileCommand = async (ctx) => {
     await ctx.reply(profile, {
         reply_markup: profileMenu,
         parse_mode: 'HTML',
+    })
+    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+        reply_markup: searchKeyboard(ctx),
     })
 }
 
