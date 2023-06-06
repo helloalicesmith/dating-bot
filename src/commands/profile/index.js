@@ -1,6 +1,7 @@
 const Composer = require('../../composer.js')
-const { composer: menu, profileMenu } = require('./menu/index.js')
-const conversation = require('./conversation/index.js')
+const { composer: menu, profileMenu } = require('./menu')
+const conversation = require('./conversation')
+const { searchKeyboard } = require('../../common/keyboards.js')
 const { photoDeleteMiddleware } = require('./middleware')
 const api = require('../../api/api.js')
 
@@ -34,6 +35,9 @@ const profileCommand = async (ctx) => {
     await ctx.reply(profile, {
         reply_markup: profileMenu,
         parse_mode: 'HTML',
+    })
+    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+        reply_markup: searchKeyboard(ctx),
     })
 }
 

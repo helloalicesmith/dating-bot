@@ -1,7 +1,8 @@
 const Composer = require('../../composer.js')
-const { composer: menu } = require('./menu/index.js')
-const conversation = require('./conversation/index.js')
-const { filtersMenu } = require('./menu/filters.js')
+const { searchKeyboard } = require('../../common/keyboards.js')
+const { composer: menu } = require('./menu')
+const conversation = require('./conversation')
+const { filtersMenu } = require('./menu')
 const api = require('../../api/api.js')
 
 const composer = new Composer()
@@ -15,8 +16,12 @@ const filtersCommand = async (ctx) => {
         await api.filtersService.createFilters(id, {})
     }
 
-    return await ctx.reply(ctx.t('filters.menu_text'), {
+    await ctx.reply(ctx.t('filters.menu_text'), {
         reply_markup: filtersMenu,
+    })
+
+    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+        reply_markup: searchKeyboard(ctx),
     })
 }
 
