@@ -10,6 +10,7 @@ const profile = require('./commands/profile/index')
 const filters = require('./commands/filters/index')
 const start = require('./commands/start/index')
 const search = require('./commands/search/index')
+
 const { searchKeyboard } = require('./common/keyboards')
 
 const token =
@@ -40,14 +41,13 @@ bot.use(async (ctx, next) => {
     const { callback_query, message } = update
     const active = await conversation.active()
 
-    const isCallbackQuery = Object.values(active).length > 0 && callback_query
+    const isConversationExist = Object.values(active).length > 0
+
+    const isCallbackQuery = isConversationExist && callback_query
     const isCancel =
-        Object.values(active).length > 0 &&
-        message?.text === ctx.t('common.cancel')
+        isConversationExist && message?.text === ctx.t('common.cancel')
     const isCommand =
-        Object.values(active).length > 0 &&
-        message?.text &&
-        message.text[0] === '/'
+        isConversationExist && message?.text && message.text[0] === '/'
 
     if (isCancel || isCallbackQuery || isCommand) {
         await conversation.exit()

@@ -1,4 +1,4 @@
-const { Keyboard } = require('grammy')
+const { InlineKeyboard, Keyboard } = require('grammy')
 
 const locationKeyboard = (ctx) =>
     new Keyboard()
@@ -8,19 +8,26 @@ const locationKeyboard = (ctx) =>
         .oneTime()
         .resized()
 
-const photoKeyboard = (ctx, imagesCount) => {
+const photoKeyboard = (ctx) => {
     const keyboard = new Keyboard()
 
-    new Array(imagesCount).fill(null).forEach((_, idx) => {
-        const imagesCount = idx + 1
+    return keyboard
+        .text(ctx.t('profile.keyboard_show_all_photo'))
+        .row()
+        .text(ctx.t('common.done'))
+        .row()
+        .resized()
+}
 
-        keyboard.text(ctx.t('profile.keyboard_photo_delete', { imagesCount }))
-    })
+const photoDeleteInlineKeyboard = (ctx, idx) => {
+    const inlineKeyboard = new InlineKeyboard()
+    inlineKeyboard.text(ctx.t('common.delete'), `profile-photo-delete-${idx}`)
 
-    return keyboard.row().text(ctx.t('common.done')).row().resized()
+    return inlineKeyboard
 }
 
 module.exports = {
     locationKeyboard,
     photoKeyboard,
+    photoDeleteInlineKeyboard,
 }

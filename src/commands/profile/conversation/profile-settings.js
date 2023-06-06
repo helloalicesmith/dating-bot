@@ -1,7 +1,10 @@
 const { searchKeyboard } = require('../../../common/keyboards')
-const { photoKeyboard } = require('../keyboards/index')
-const { isNameValid, isOldValid } = require('../../../validators/index')
-const { locationKeyboard } = require('../keyboards/index')
+const { isNameValid, isOldValid } = require('../../../validators')
+const {
+    locationKeyboard,
+    photoKeyboard,
+    photoDeleteInlineKeyboard,
+} = require('../keyboards')
 const api = require('../../../api/api')
 
 const nameConversation = async (conversation, ctx) => {
@@ -134,21 +137,11 @@ const cityConversation = async (conversation, ctx) => {
 
 const photoConversation = async (conversation, ctx) => {
     while (true) {
-        const currentCtx = await conversation.waitFor('message:photo')
+        const currentCtx = await conversation.wait()
         const { message, from } = currentCtx
 
         const { text, photo } = message
         const { images } = conversation.session.user
-
-        const selectDeleteFirst = ctx.t('profile.keyboard_photo_delete', {
-            imagesCount: 1,
-        })
-        const selectDeleteSecond = ctx.t('profile.keyboard_photo_delete', {
-            imagesCount: 2,
-        })
-        const selectDeleteThird = ctx.t('profile.keyboard_photo_delete', {
-            imagesCount: 3,
-        })
 
         if (text === ctx.t('common.done')) {
             await ctx.reply(ctx.t('profile.photo_settings_cancel'), {
@@ -157,31 +150,28 @@ const photoConversation = async (conversation, ctx) => {
             break
         }
 
-        const removeImagesByIdFc = removeImagesById(currentCtx)
+        if (text === ctx.t('profile.keyboard_show_all_photo')) {
+            for (const idx in images) {
+                await ctx.replyWithPhoto(images[idx], {
+                    reply_markup: photoDeleteInlineKeyboard(ctx, idx),
+                })
+            }
 
-        if (text === selectDeleteFirst) {
-            await removeImagesByIdFc(0)
-            continue
-        }
-
-        if (text === selectDeleteSecond) {
-            await removeImagesByIdFc(1)
-            continue
-        }
-
-        if (text === selectDeleteThird) {
-            await removeImagesByIdFc(2)
             continue
         }
 
         if (!photo || text) {
-            await ctx.reply(ctx.t('profile.photo_add_failure'))
+            await ctx.reply(ctx.t('profile.photo_add_failure'), {
+                reply_markup: photoKeyboard(ctx),
+            })
             continue
         }
 
         if (photo) {
             if (images.length >= 3) {
-                await ctx.reply(ctx.t('profile.photo_length_failure'))
+                await ctx.reply(ctx.t('profile.photo_length_failure'), {
+                    reply_markup: photoKeyboard(ctx),
+                })
                 continue
             }
 
@@ -195,12 +185,11 @@ const photoConversation = async (conversation, ctx) => {
             )
 
             await ctx.reply(ctx.t('profile.photo_add_success'), {
-                reply_markup: photoKeyboard(ctx, newImages.length),
+                reply_markup: photoKeyboard(ctx),
             })
 
             continue
         }
-        break
     }
 }
 
@@ -223,26 +212,6 @@ const descriptionConversation = async (conversation, ctx) => {
         })
 
         break
-    }
-}
-
-function removeImagesById(ctx) {
-    return async (idx) => {
-        const { images } = ctx.session.user
-        const { from } = ctx
-        const newImages = [...images]
-
-        newImages.splice(idx, 1)
-
-        ctx.session.user.images = newImages
-
-        await api.usersService.updateUser(from.id, {
-            images: newImages,
-        })
-
-        await ctx.reply(ctx.t('profile.photo_delete_success'), {
-            reply_markup: photoKeyboard(ctx, newImages.length),
-        })
     }
 }
 
