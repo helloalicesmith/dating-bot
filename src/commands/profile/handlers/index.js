@@ -1,5 +1,9 @@
 const { cancelKeyboard, genderKeyboard } = require('../../../common/keyboards')
-const { locationKeyboard, photoKeyboard } = require('../keyboards/index')
+const {
+    locationKeyboard,
+    photoKeyboard,
+    photoDeleteInlineKeyboard,
+} = require('../keyboards')
 
 const settingsNameHandler = async (ctx) => {
     await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
@@ -36,14 +40,16 @@ const settingsCitiesHandler = async (ctx) => {
 const settingsPhotoHandler = async (ctx) => {
     const { images } = ctx.session.user
 
-    for (const it of images) {
-        await ctx.replyWithPhoto(it)
+    for (const idx in images) {
+        await ctx.replyWithPhoto(images[idx], {
+            reply_markup: photoDeleteInlineKeyboard(ctx, idx),
+        })
     }
 
     await ctx.reply(
         ctx.t('profile.menu_settings_photo_info', { images: images.length }),
         {
-            reply_markup: photoKeyboard(ctx, images.length),
+            reply_markup: photoKeyboard(ctx),
         }
     )
 

@@ -1,6 +1,7 @@
 const Composer = require('../../composer.js')
 const { composer: menu, profileMenu } = require('./menu/index.js')
 const conversation = require('./conversation/index.js')
+const { photoDeleteMiddleware } = require('./middleware')
 const api = require('../../api/api.js')
 
 const composer = new Composer()
@@ -38,6 +39,7 @@ const profileCommand = async (ctx) => {
 
 composer.use(conversation)
 composer.use(menu)
+composer.use(photoDeleteMiddleware)
 
 composer.command(['profile'], profileCommand)
 
