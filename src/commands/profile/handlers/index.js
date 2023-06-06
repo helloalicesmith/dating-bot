@@ -6,7 +6,7 @@ const {
 } = require('../keyboards')
 
 const settingsNameHandler = async (ctx) => {
-    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+    await ctx.reply(ctx.t('profile.menu_settings_name_confirm'), {
         reply_markup: cancelKeyboard(ctx),
     })
 
