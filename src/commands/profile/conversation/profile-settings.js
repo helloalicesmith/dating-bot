@@ -167,14 +167,7 @@ const photoConversation = async (conversation, ctx) => {
             continue
         }
 
-        if (photo) {
-            if (images.length >= 3) {
-                await ctx.reply(ctx.t('profile.photo_length_failure'), {
-                    reply_markup: photoKeyboard(ctx),
-                })
-                continue
-            }
-
+        if (photo && images.length < 3) {
             const newImages = [...images, photo[0].file_id]
 
             conversation.session.user.images = newImages
