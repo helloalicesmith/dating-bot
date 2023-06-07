@@ -63,7 +63,7 @@ const dislikeCommand = async (ctx) => {
 }
 
 composer.filter(hears('common.keyboard_search'), searchCommand)
-composer.filter(hears('common.like'), likeCommand)
-composer.filter(hears('common.dislike'), dislikeCommand)
+composer.filter(hears('search.keyboard_like'), likeCommand)
+composer.filter(hears('search.keyboard_dislike'), dislikeCommand)
 
 module.exports = composer
