@@ -83,6 +83,8 @@ search =
     .field_city = Город
     .profile = <b>Имя</b>: {$name}
                <b>Возраст</b>: {$old}
+               <b>Описание</b>: {$description}
+               <b>Город</b>: {$city}
     .noresult = Ничего не найдено
     .empty_filters = Не заполнены фильтры /filters
     .empty_profile = Не заполнен профиль /profile
