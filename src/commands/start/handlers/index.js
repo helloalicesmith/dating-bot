@@ -6,7 +6,7 @@ const startHandler = async (ctx) => {
 
     const { data } = await api.usersService.getUserProfile(id)
 
-    const text = data
+    const text = data.name
         ? ctx.t('start.hello_again', {
               name: data.name ?? '',
           })

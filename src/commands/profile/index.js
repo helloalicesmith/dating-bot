@@ -11,7 +11,7 @@ const profileCommand = async (ctx) => {
     const { id, language_code } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
     const { name, old, gender, location, images, description } = data
-    const city = location.local_names && location.local_names[language_code]
+    const city = location?.local_names[language_code]
     let tGender = ''
 
     ctx.session.user = data
