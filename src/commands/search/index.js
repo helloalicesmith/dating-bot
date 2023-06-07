@@ -7,17 +7,31 @@ const composer = new Composer()
 
 const searchCommand = async (ctx) => {
     try {
-        const { id } = ctx.message.from
+        const { id, language_code } = ctx.message.from
         const { data } = await api.searchService.getSearchUsers(id)
 
         if (!data) {
             return await ctx.reply(ctx.t('search.noresult'))
         }
 
-        return await ctx.reply(
+        const city = data.location.local_names[language_code]
+        const mediaGroup = []
+
+        for (const it of data.images) {
+            mediaGroup.push({
+                type: 'photo',
+                media: it,
+            })
+        }
+
+        await ctx.replyWithMediaGroup(mediaGroup)
+
+        await ctx.reply(
             ctx.t('search.profile', {
                 name: data.name,
                 old: data.old,
+                description: data.description,
+                city,
             }),
             { parse_mode: 'HTML' }
         )
