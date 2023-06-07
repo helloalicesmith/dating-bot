@@ -23,9 +23,7 @@ const photoKeyboard = (ctx) => {
 
 const photoDeleteInlineKeyboard = (ctx, idx) => {
     const inlineKeyboard = new InlineKeyboard()
-    inlineKeyboard
-        .text(ctx.t('common.delete'), `profile-photo-delete-${idx}`)
-        .persistent()
+    inlineKeyboard.text(ctx.t('common.delete'), `profile-photo-delete-${idx}`)
 
     return inlineKeyboard
 }

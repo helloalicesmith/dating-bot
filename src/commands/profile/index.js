@@ -37,7 +37,8 @@ const profileCommand = async (ctx) => {
         reply_markup: profileMenu,
         parse_mode: 'HTML',
     })
-    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+
+    await ctx.reply(ctx.t('common.info'), {
         reply_markup: searchKeyboard(ctx),
     })
 }

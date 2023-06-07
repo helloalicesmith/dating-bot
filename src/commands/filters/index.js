@@ -20,7 +20,7 @@ const filtersCommand = async (ctx) => {
         reply_markup: filtersMenu,
     })
 
-    await ctx.reply(ctx.t('profile.menu_settings_confirm'), {
+    await ctx.reply(ctx.t('common.info'), {
         reply_markup: searchKeyboard(ctx),
     })
 }
