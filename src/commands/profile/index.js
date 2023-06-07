@@ -8,9 +8,10 @@ const api = require('../../api/api.js')
 const composer = new Composer()
 
 const profileCommand = async (ctx) => {
-    const { id } = ctx.message.from
+    const { id, language_code } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
-    const { name, old, gender, city, images, description } = data
+    const { name, old, gender, location, images, description } = data
+    const city = location.local_names && location.local_names[language_code]
     let tGender = ''
 
     ctx.session.user = data
