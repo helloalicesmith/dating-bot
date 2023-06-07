@@ -122,8 +122,7 @@ const cityConversation = async (conversation, ctx) => {
                     lon,
                     country,
                     name,
-                    local_name:
-                        local_names[from.language_code] || local_names.en,
+                    local_names: local_names, // [from.language_code] || local_names.en,
                 },
             })
         )
