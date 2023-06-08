@@ -3,19 +3,10 @@ const { searchKeyboard } = require('../../common/keyboards.js')
 const { composer: menu } = require('./menu')
 const conversation = require('./conversation')
 const { filtersMenu } = require('./menu')
-const api = require('../../api/api.js')
 
 const composer = new Composer()
 
 const filtersCommand = async (ctx) => {
-    const { id } = ctx.message.from
-
-    const { data } = await api.filtersService.getUserFilters(id)
-
-    if (!data) {
-        await api.filtersService.createFilters(id, {})
-    }
-
     await ctx.reply(ctx.t('filters.menu_text'), {
         reply_markup: filtersMenu,
     })

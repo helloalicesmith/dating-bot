@@ -190,8 +190,17 @@ const descriptionConversation = async (conversation, ctx) => {
         const { message, from } = await conversation.waitFor('message:text')
         const { text } = message
 
+        if (text.length < 2) {
+            await ctx.reply(
+                ctx.t('profile.menu_settings_description_min_failure')
+            )
+            continue
+        }
+
         if (text.length > 200) {
-            await ctx.reply(ctx.t('profile.menu_settings_description_failure'))
+            await ctx.reply(
+                ctx.t('profile.menu_settings_description_max_failure')
+            )
             continue
         }
 

@@ -10,9 +10,10 @@ const composer = new Composer()
 const profileCommand = async (ctx) => {
     const { id, language_code } = ctx.message.from
     const { data } = await api.usersService.getUserProfile(id)
+
     const { name, old, gender, location, images, description } = data
     const city = location?.local_names[language_code]
-    let tGender = ''
+    let tGender = null
 
     ctx.session.user = data
 

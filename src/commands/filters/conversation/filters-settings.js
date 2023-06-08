@@ -13,7 +13,7 @@ const filtersOldConversation = async (conversation, ctx) => {
             continue
         }
 
-        await api.filtersService.updateFilters(from.id, {
+        await api.usersService.updateFilters(from.id, {
             old,
         })
 
@@ -29,7 +29,7 @@ const filtersGenderConversation = async (conversation, ctx) => {
         const { message, from } = await conversation.wait()
 
         if (ctx.t('common.keyboard_gender_male') === message.text) {
-            await api.filtersService.updateFilters(from.id, {
+            await api.usersService.updateFilters(from.id, {
                 gender: 'male',
             })
 
@@ -40,7 +40,7 @@ const filtersGenderConversation = async (conversation, ctx) => {
         }
 
         if (ctx.t('common.keyboard_gender_female') === message.text) {
-            await api.filtersService.updateFilters(from.id, {
+            await api.usersService.updateFilters(from.id, {
                 gender: 'female',
             })
 

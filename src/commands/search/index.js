@@ -1,5 +1,10 @@
 const { hears } = require('@grammyjs/i18n')
 
+const {
+    mapSearchProfile,
+    getIsUserNotEmpty,
+    getIsFiltersNotEmpty,
+} = require('./helpers')
 const api = require('../../api/api')
 const Composer = require('../../composer.js')
 const { searchRatingKeyboard } = require('./keyboards')
@@ -7,51 +12,42 @@ const { searchRatingKeyboard } = require('./keyboards')
 const composer = new Composer()
 
 const searchCommand = async (ctx) => {
-    try {
-        const { id, language_code } = ctx.message.from
-        const { data } = await api.searchService.getSearchUsers(id)
+    const { id, language_code } = ctx.message.from
+    const { data: user } = await api.usersService.getUserProfile(id)
+    const { filters, ...restUser } = user
 
-        if (!data) {
-            return await ctx.reply(ctx.t('search.noresult'))
-        }
+    const isUserNotEmpty = getIsUserNotEmpty(restUser)
+    const isFiltersNotEmpty = getIsFiltersNotEmpty(filters)
 
-        const city = data?.location?.local_names[language_code]
-        const mediaGroup = []
-
-        for (const it of data.images) {
-            mediaGroup.push({
-                type: 'photo',
-                media: it,
-            })
-        }
-
-        await ctx.reply(ctx.t('common.info'), {
-            reply_markup: searchRatingKeyboard(ctx),
-        })
-
-        mediaGroup[0] = {
-            ...mediaGroup[0],
-            caption: ctx.t('search.profile', {
-                name: data.name,
-                old: data.old,
-                description: data.description,
-                city,
-            }),
+    if (!isUserNotEmpty && !isFiltersNotEmpty) {
+        await ctx.reply(ctx.t('search.empty_all'), {
             parse_mode: 'HTML',
-        }
-
-        await ctx.replyWithMediaGroup(mediaGroup)
-    } catch (err) {
-        if (err.response.data.error === 'filters_is_empty') {
-            return await ctx.reply(ctx.t('search.empty_filters'))
-        }
-
-        if (err.response.data.error === 'profile_is_empty') {
-            return await ctx.reply(ctx.t('search.empty_profile'))
-        }
-
-        throw err
+        })
+        return
     }
+
+    if (!isUserNotEmpty) {
+        await ctx.reply(ctx.t('search.empty_profile'))
+        return
+    }
+
+    if (!isFiltersNotEmpty) {
+        await ctx.reply(ctx.t('search.empty_filters'))
+        return
+    }
+
+    const { data } = await api.searchService.getSearchUsers(id)
+
+    if (!data) {
+        await ctx.reply(ctx.t('search.noresult'))
+        return
+    }
+
+    await ctx.reply(ctx.t('common.info'), {
+        reply_markup: searchRatingKeyboard(ctx),
+    })
+
+    await ctx.replyWithMediaGroup(mapSearchProfile(ctx, data, language_code))
 }
 
 const likeCommand = async (ctx) => {
